@@ -1,1 +1,1 @@
-
+"""Authentication blueprint package."""
