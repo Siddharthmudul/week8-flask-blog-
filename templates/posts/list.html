@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Posts | Flask Blog{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4"><h1>Posts</h1>{% if current_user.is_authenticated %}<a class="btn btn-primary" href="{{ url_for('posts.create_post') }}">New post</a>{% endif %}</div>
+<form class="row g-2 mb-4" method="get"><div class="col"><input class="form-control" name="q" value="{{ query }}" placeholder="Search title or content"></div><div class="col-auto"><button class="btn btn-outline-primary">Search</button></div></form>
+{% for post in pagination.items %}<article class="card mb-3 shadow-sm"><div class="card-body"><h2 class="h4"><a class="text-decoration-none" href="{{ url_for('posts.detail', post_id=post.id) }}">{{ post.title }}</a></h2><p class="text-muted">{{ post.category }} · {{ post.created_at.strftime('%B %d, %Y') }} · by {{ post.author.name or post.author.username }}</p><div>{{ post.content|striptags|truncate(220) }}</div></div></article>{% else %}<p>No posts found.</p>{% endfor %}
+<nav><ul class="pagination">{% if pagination.has_prev %}<li class="page-item"><a class="page-link" href="{{ url_for('posts.list_posts', page=pagination.prev_num, q=query) }}">Previous</a></li>{% endif %}<li class="page-item active"><span class="page-link">{{ pagination.page }}</span></li>{% if pagination.has_next %}<li class="page-item"><a class="page-link" href="{{ url_for('posts.list_posts', page=pagination.next_num, q=query) }}">Next</a></li>{% endif %}</ul></nav>
+{% endblock %}
