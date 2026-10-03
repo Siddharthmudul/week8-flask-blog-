@@ -1,1 +1,1 @@
-
+"""Posts blueprint package."""
