@@ -1,1 +1,1 @@
-
+"""Main blueprint package."""
