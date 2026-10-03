@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Personal Blog Home{% endblock %}
+{% block site_nav %}{% endblock %}
+
+{% block content %}
+<div class="page-shell">
+    <header class="topbar">
+        <div class="brand">🌟 PERSONAL BLOG</div>
+            <nav class="nav" aria-label="Main navigation">
+            <span>Welcome, {{ user.name }}!</span>
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+            <a href="{{ url_for('posts.create_post') }}">New Post</a>
+            <a href="#">Profile</a>
+        </nav>
+    </header>
+
+    <div class="search-box">
+        <label for="search">🔍 SEARCH POSTS:</label>
+        <form action="{{ url_for('posts.list_posts') }}" method="get"><input id="search" name="q" type="search" placeholder="Search posts" /><button class="btn" type="submit">Search</button></form>
+    </div>
+
+    <section>
+        <div class="section-title">📝 RECENT BLOG POSTS:</div>
+
+        <article class="post-card">
+            <h2>🎯 {{ post.title }}</h2>
+            <div class="meta">
+                <span>Published: <strong>{{ published_date }}</strong></span> |
+                <span>Author: <strong>{{ user.name }}</strong></span> |
+                <span>Category: <strong>{{ post.category }}</strong></span>
+            </div>
+
+            <div class="post-summary">{{ post.content|safe }}</div>
+
+            <div class="stats">📊 Stats: Views: 1,245 | Comments: {{ comment_total }} | Likes: 45</div>
+
+            <div class="comments">
+                <h3>💬 COMMENTS:</h3>
+                {% for comment in comments %}
+                    <div class="comment">{{ loop.index }}. <strong>{{ comment.user.name }}</strong> ({{ comment_dates[loop.index0] if loop.index0 < comment_dates|length else comment.created_at.strftime('%b %d, %Y') }}):<br>"{{ comment.body }}"</div>
+                {% endfor %}
+            </div>
+        </article>
+    </section>
+
+    <div class="stats-grid">
+        <div class="info-box">
+            <h3>📋 BLOG STATISTICS:</h3>
+            <ul>
+                <li>Total Posts: {{ total_posts }}</li>
+                <li>Total Comments: {{ total_comments }}</li>
+                <li>Categories: {{ categories }}</li>
+                <li>Most Popular Post: "{{ most_popular_post }}" (2,345 views)</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h3>👥 ACTIVE USERS:</h3>
+            <ol>
+                {% for name, count in active_users %}
+                    <li>{{ name }} ({{ count }} posts)</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+    <div class="info-box">
+        <h3>📬 SUBSCRIBE TO NEWSLETTER:</h3>
+        <div class="newsletter">
+            <input type="email" placeholder="Email Input" />
+            <button class="btn" type="button">Subscribe</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div>© 2024 My Personal Blog | <a href="#">About</a> | <a href="{{ url_for('main.contact') }}">Contact</a> | <a href="#">Privacy Policy</a></div>
+    </footer>
+</div>
+{% endblock %}

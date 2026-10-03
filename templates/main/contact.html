@@ -1,0 +1,3 @@
+{% extends "base.html" %}
+{% block title %}Contact | Flask Blog{% endblock %}
+{% block content %}<div class="row justify-content-center"><div class="col-lg-8"><h1>Contact</h1><form method="post">{{ form.hidden_tag() }}{% for field in [form.name, form.email, form.subject, form.message] %}<div class="mb-3">{{ field.label(class="form-label") }}{{ field(class="form-control", rows=5 if field.name == 'message' else None) }}{% for error in field.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}</div>{% endfor %}{{ form.submit(class="btn btn-primary") }}</form></div></div>{% endblock %}
